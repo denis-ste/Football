@@ -1,0 +1,39 @@
+# --- JetBrains CLion
+.idea/
+
+# --- CMake / build trees
+cmake-build-*/
+build/
+out/
+CMakeFiles/
+CMakeCache.txt
+CTestTestfile.cmake
+Makefile
+cmake_install.cmake
+compile_commands.json
+
+# --- Artefakty kompilacji
+*.o
+*.obj
+*.lo
+*.la
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.pdb
+*.ilk
+*.exp
+*.iobj
+*.ipdb
+*.pch
+
+# --- Inne IDE / narzędzia
+.vscode/
+*.iml
+
+# --- Systemowe
+.DS_Store
+Thumbs.db
