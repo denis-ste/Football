@@ -17,6 +17,16 @@ const char * StaminaDrainSimulator::skillName(int idx) {
     return "Wślizg"; // komentarz: nazwa 2
 }
 
+void StaminaDrainSimulator::addPreActionEffect(std::unique_ptr<ITurnEffect> e) {
+    preActionEffects.push_back(std::move(e)); // komentarz: zapisz strategię
+}
+
+void StaminaDrainSimulator::runPreActionPhase(Team & team, const std::vector<std::string> & labels, std::size_t actingIndex) {
+    for (auto & e : preActionEffects) {
+        e->offBallRunningVigorDecreaseEffect(team, labels, actingIndex); // komentarz: uruchom pre-action
+    }
+}
+
 void StaminaDrainSimulator::runUntilExhausted(Team & team, const std::string & path, int delayMs) {
     const auto & players = team.getPlayers(); // komentarz: snapshot graczy
     if (players.empty()) {
@@ -39,6 +49,10 @@ void StaminaDrainSimulator::runUntilExhausted(Team & team, const std::string & p
         stats.overwriteSnapshotWithNote(team, choice.playerIndex, note, path); // komentarz: NADPISZ snapshot z uwagą (13 linii)
 
         clock.sleepMs(delayMs); // komentarz: 3 s do efektu
+        const auto labels = stats.buildRoleLabels(team); // komentarz: etykiety ról w tej turze
+        for (auto & e : preActionEffects) {
+            e->offBallRunningVigorDecreaseEffect(team, labels, choice.playerIndex); // komentarz: off-ball running drain i inne efekty pre-action
+        }
         auto & player = *players[choice.playerIndex]; // komentarz: gracz
         const int before = player.getWitalnosc(); // komentarz: wigor przed
         const int after = std::max(0, before - cost); // komentarz: clamp 0

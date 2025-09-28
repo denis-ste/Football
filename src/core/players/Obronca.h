@@ -2,10 +2,5 @@
 
 #include "APilkarz.h"
 
-class Obronca : public APilkarz {
-public:
-    void usePass();
-    void useShot();
-    void useSlide();
-};
+class Obronca : public APilkarz {};
 

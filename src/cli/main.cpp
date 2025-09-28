@@ -10,6 +10,8 @@
 #include "app/sim/StdClock.h" // komentarz: zegar
 #include "app/sim/RandomActionSelector.h" // komentarz: wybór akcji
 #include "app/sim/StaminaDrainSimulator.h" // komentarz: pętla
+#include "app/sim/effects/MovementEffect.h" // komentarz: efekt -1 dla graczy bez piłki
+#include "app/sim/effects/MovementEffect.h"
 #include <iostream> // komentarz: cerr
 
 int main() {
@@ -31,6 +33,7 @@ int main() {
         StdClock clock; // komentarz: zegar
         RandomActionSelector selector(rng); // komentarz: wybór akcji
         StaminaDrainSimulator sim(selector, clock, appender, service); // komentarz: DI
+        sim.addPreActionEffect(std::make_unique<MovementEffect>()); // komentarz: -1 wigor dla 9 off-ball (bez GK i bez wykonującego)
         sim.runUntilExhausted(team, path, 3000); // komentarz: co 3 s: adnotacja → stan po
     } catch (const std::exception & ex) {
         std::cerr << "Błąd: " << ex.what() << std::endl; // komentarz: log
